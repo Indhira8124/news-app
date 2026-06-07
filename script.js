@@ -1,5 +1,5 @@
 const API_URL =
-" https://newsdata.io/api/1/latest?apikey=pub_573b266e982d4c8da436235c36d38b50&q=tamil%20news";
+"https://newsdata.io/api/1/latest?apikey=pub_573b266e982d4c8da436235c36d38b50&q=tamil news";
 
 fetch(API_URL)
 .then(response => response.json())
@@ -7,43 +7,55 @@ fetch(API_URL)
 
     const container = document.getElementById("newsList");
 
+    container.innerHTML = "";
+
+    if (!data.results || data.results.length === 0) {
+        container.innerHTML = "<h2>No news found</h2>";
+        return;
+    }
+
     data.results.forEach(news => {
+
+        const imageUrl =
+            news.image_url &&
+            news.image_url.trim() !== ""
+                ? news.image_url
+                : "https://picsum.photos/400/250";
 
         const card = document.createElement("a");
 
         card.className = "news-card";
-
-        card.href = news.link;
+        card.href = news.link || "#";
         card.target = "_blank";
 
         card.innerHTML = `
             <img
                 class="news-image"
-                src="${news.image_url || 'https://via.placeholder.com/300x200'}"
-                alt="News Image">
+                src="${imageUrl}"
+                alt="News"
+                onerror="this.src='https://picsum.photos/400/250';">
 
             <div class="news-content">
 
                 <div class="news-top">
-
                     <span class="date">
-                        ${new Date(news.pubDate)
-                            .toLocaleDateString()}
+                        ${news.pubDate
+                            ? new Date(news.pubDate).toLocaleDateString()
+                            : ''}
                     </span>
 
                     <span class="source">
                         ${news.source_name || ''}
                     </span>
-
                 </div>
 
                 <h2>
-                    ${news.title || ''}
+                    ${news.title || 'No Title'}
                 </h2>
 
                 <p>
-                    ${(news.description || '')
-                        .substring(0, 200)}...
+                    ${(news.description || 'No Description')
+                        .substring(0, 200)}
                 </p>
 
                 <div class="news-footer">
@@ -64,4 +76,10 @@ fetch(API_URL)
         container.appendChild(card);
     });
 
+})
+.catch(error => {
+    console.error(error);
+
+    document.getElementById("newsList").innerHTML =
+        "<h2>Failed to load news.</h2>";
 });
