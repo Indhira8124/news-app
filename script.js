@@ -1,5 +1,7 @@
 const API_URL =
-"https://newsdata.io/api/1/latest?apikey=pub_573b266e982d4c8da436235c36d38b50&q=tamil today news";
+"https://newsdata.io/api/1/latest?apikey=pub_573b266e982d4c8da436235c36d38b50&q=tamil%20today%20news";
+
+
 
 fetch(API_URL)
 .then(response => response.json())
@@ -24,6 +26,16 @@ fetch(API_URL)
 
         const card = document.createElement("a");
 
+    const displayDate = new Date(
+    news.pubDate.replace(" ", "T") + "Z"
+).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC"
+});
+console.log("pubDate =", news.pubDate);
+console.log("fetched_at =", news.fetched_at);
         card.className = "news-card";
         card.href = news.link || "#";
         card.target = "_blank";
@@ -39,7 +51,7 @@ fetch(API_URL)
 
                 <div class="news-top">
                    <span class="date">
-    ${news.pubDate ? news.pubDate.substring(0, 10) : ''}
+    ${news.fetched_at}
 </span>
 
                     <span class="source">
