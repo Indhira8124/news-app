@@ -38,11 +38,9 @@ fetch(API_URL)
             <div class="news-content">
 
                 <div class="news-top">
-                    <span class="date">
-                        ${news.pubDate
-                            ? new Date(news.pubDate).toLocaleDateString()
-                            : ''}
-                    </span>
+                   <span class="date">
+    ${news.pubDate ? news.pubDate.substring(0, 10) : ''}
+</span>
 
                     <span class="source">
                         ${news.source_name || ''}
