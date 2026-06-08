@@ -1,5 +1,5 @@
 const API_URL =
-"https://newsdata.io/api/1/latest?apikey=pub_573b266e982d4c8da436235c36d38b50&q=tamil news";
+"https://newsdata.io/api/1/latest?apikey=pub_573b266e982d4c8da436235c36d38b50&q=tamil today news";
 
 fetch(API_URL)
 .then(response => response.json())
